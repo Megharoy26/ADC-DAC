@@ -1,0 +1,28 @@
+#include <LiquidCrystal.h>
+#include<Wire.h>
+#define PCF8591 (0x90 >> 1)
+#define AIN0 0x00
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+int Value = 0;
+
+void setup()
+{
+  Wire.begin();
+  lcd.begin(16,2);
+}
+void loop()
+{
+  Wire.beginTransmission(PCF8591);
+  Wire.write(AIN0);
+  Wire.endTransmission();
+  Wire.requestFrom(PCF8591, 1);
+
+  Value = Wire.read();
+  lcd.print("ADC Value=");
+  lcd.print(Value);
+  delay(500);
+  lcd.clear();
+}
+
+Video
